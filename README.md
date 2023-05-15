@@ -2,7 +2,8 @@
 Assembler
 
 In this project we used Python language to write the program for our assembler. 
-We made use live share feature of vs code to collaborate on the code at the same time. 
+We made use live share feature of vs code to collaborate on the code at the same time from different locations.
+
 We defined a function that would test each instruction on basis of instruction length. By doing this we could divide all instructions in 5 categories by length. In each category we made subcategories according to need.
 We used print statements to identify where the error is and then modified the code according to that error.
 We read the instructions from a file and then made a nested list in which each element was a list which contained the instruction. This list is used to check the labels since each nested list is a instruction and that instruction is given a line number , outer_list[inside_list[0]] is compared with the label statement given after opcode. 
