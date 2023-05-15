@@ -8,3 +8,5 @@ We used print statements to identify where the error is and then modified the co
 We read the instructions from a file and then made a nested list in which each element was a list which contained the instruction. 
 We also used dictionaries to give opcodes and register numbers in binary for the machine code conversion.
 We also used dictionary to give each instruction a line number which we used in machine code for "jmp" and similar instructions.
+We have assigned binary number of 7 bits to variables according to the line numbers.
+In built python functions are also used like isnumeric(),len() etc.
