@@ -1,52 +1,67 @@
-def error_gen(flag2):
-    return flag2
-def instruction(ls,ln,l,dic,var_dic,extra_var):
+print_list=[]
+def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
+    d1={"add":"00000","sub":"00001","mul":"00110","xor":"01010","or":"01011","and":"01100"}
+    d3={"mov":"00010","rs":"01000","ls":"01001"}  
+    array={"jmp":"01111" ,"jlt":"11100","jgt":"11101","je":"11111"}
+    d4={"mov":"00011","ld":"00100","st":"00101","div":"00111","not":"01101","cmp":"01110"}
     flag2=True
     if len(l)==5:
         if ":" in l[0]:
             lst10=[]
             for k in range(1,len(l)):
                 lst10.append(l[k])
-            
-            instruction(ls,ln,lst10,dic,var_dic,extra_var)  
+            instruction(ls,ln,lst10,dic,var_dic,extra_var,line_number)  
         else:
-                print("syntax error")
-                flag2= False
-                error_gen(flag2)
+                print_list.append("False")
+                print("SyntaxError",line_number,":Instruction not supported")
+                flag2=False
+               
     if len(l)==4:
         d1={"add":"00000","sub":"00001","mul":"00110","xor":"01010","or":"01011","and":"01100"}
         if l[0] in d1:
-            print(d1[l[0]],end="")
-            print("00",end="")
+            # print(d1[l[0]],end="")
+            # print("00",end="")
+
+            print_list.append(d1[l[0]])
+            print_list.append("00")
+
             if l[1] in dic:
-                print(dic[l[1]],end="")
+                # print(dic[l[1]],end="")
+
+                print_list.append(dic[l[1]])
+
                 if l[2] in dic:
-                    print(dic[l[2]],end="")
+                    # print(dic[l[2]],end="")
+
+                    print_list.append(dic[l[2]])
+
                     if l[3] in dic:
-                        print(dic[l[3]])
+                        # print(dic[l[3]])
+
+                        print_list.append(dic[l[3]])
+                        print_list.append("\n")
                     else:
-                        print("syntax error : wrong register name")
-                        flag2= False
-                        error_gen(flag2)
-                        
+                        print_list.append("False")
+                        print("Error line number",line_number+1,":",l[3],"->wrong register name")
+                        flag2=False
                 else:
-                    print("syntax error : wrong register")
-                    flag2= False
-                    error_gen(flag2)
+                    print_list.append("False")
+                    print("Error line number",line_number+1,":",l[2],"->wrong register name")
+                    flag2=False
             else:
-                print("syntax error: wrong register name")
-                flag2= False
-                error_gen(flag2)
+                print_list.append("False")
+                print("Error line number",line_number+1,":",l[1],"->wrong register name")
+                flag2=False
         elif ":" in l[0]:
             lst10=[]
             for k in range(1,len(l)):
                 lst10.append(l[k])
-            instruction(ls,ln,lst10,dic,var_dic,extra_var)  
+            instruction(ls,ln,lst10,dic,var_dic,extra_var,line_number)  
         else:
-                print("syntax error: Instruction not supported by ISA")
-                flag2= False
-                error_gen(flag2)
-        
+            print_list.append("False")
+            print("Error line number",line_number+1,": Instruction not supported by ISA")
+            flag2=False
+    
     elif len(l)==2:
         # type E
         array={"jmp":"01111" ,"jlt":"11100","jgt":"11101","je":"11111"}
@@ -57,8 +72,13 @@ def instruction(ls,ln,l,dic,var_dic,extra_var):
             for j in range(0,len(new_list1)):
                 if l[1] == new_list1[j][0][:-1]:
                     flag2=True
-                    print(array[l[0]],end="")
-                    print("0000",end="")
+
+                    # print(array[l[0]],end="")
+                    # print("0000",end="")
+
+                    print_list.append(array[l[0]])
+                    print_list.append("0000")
+
                     cs=""
                     for item in ln[j]:
                         cs+=str(item)
@@ -70,41 +90,50 @@ def instruction(ls,ln,l,dic,var_dic,extra_var):
                         while(len(xtt)<7):
                             xtt.insert(0,0)
                     for i in xtt:
-                        print(i,end="")
-                    print()
+                        # print(i,end="")
+                        print_list.append(i)
+                    # print()
+                    print_list.append("\n")
                     break
                 
                 else:
-                    flag2=False
-            if flag2==False:
-                print("syntax error: Label not defined!!")
-                flag2= False
-                error_gen(flag2)  
+                    flag2="False"
+            if flag2=="False":
+                print_list.append("False")
+                print("Error line number",line_number+1,": Label not defined!!")
+                flag2=False
+                 
         if ":" in l[0]:
             if(l[1]=="hlt"):
-                
-                print("1101000000000000")
-                
+                # print("1101000000000000")
+                print_list.append("1101000000000000")
+                print_list.append("\n")
             else:
-                print("syntax error: Invalid instruction after label")
-                flag2= False
-                error_gen(flag2)  
+                print_list.append("False")
+                print("Error line number",line_number+1,": Invalid instruction after label")
+                flag2=False
+                 
         if l[0] not in array and ":" not in l[0]:
-            print("syntax error: Instruction not supported by ISA")
-            
-            flag2= False
-            error_gen(flag2)
+            print_list.append("False")
+            print("Error line number",line_number+1,": Instruction not supported by ISA")
+            flag2=False
     elif len(l)==1:
         if l[0]=="hlt":
-           
-            print("1101000000000000")
+            # print("1101000000000000")
+            print_list.append("1101000000000000")
+            print_list.append("\n")
         elif ":" in l[0]:
             pass
         else:
-                print("syntax error: Instruction does not exist")
+            print_list.append("False")
+            # if l[0] not in dic or l[0] not in d1 or l[0] not in array or l[0] not in d3 or l[0] not in d4:
+            if l[0].strip() in dic or l[0].strip() in d1:
                 
+                print("Error line number",line_number+1,": Instruction not supported by ISA")
                 flag2= False
-                error_gen(flag2)
+            else:
+                 print("Error line number",line_number+1,":",l[0],"->Instruction not supported by ISA")
+               
 
     elif len(l)==3:
 
@@ -114,43 +143,40 @@ def instruction(ls,ln,l,dic,var_dic,extra_var):
             
             if l[0] in d3:
                 
-                print(d3[l[0]],end="")
-                print("0",end="")
-                if l[1] in dic:
-                    
-                    print(dic[l[1]],end="")
+                # print(d3[l[0]],end="")
+                # print("0",end="")
 
-                   
+                print_list.append(d3[l[0]])
+                print_list.append("0")
+
+                if l[1] in dic:                
+                    # print(dic[l[1]],end="") 
+                    print_list.append(dic[l[1]])                  
                     if l[2][1:].isnumeric():
                         cd=int(l[2][1:])
                         cd1=bin(cd).replace("0b","")
                         cd1=list(cd1)
                         if len(cd1)<=7:
                             while(len(cd1)<7):
-                                cd1.insert(0,0)
-                                
-                            
-                            for i in cd1:
-                               
-                                print(i,end="")
-                            print()
+                                cd1.insert(0,0)                           
+                            for i in cd1:                             
+                                # print(i,end="")
+                                print_list.append(i)
+                            # print()
+                            print_list.append("\n")
                         else:
-                            print("syntax error: Immediate value exceeded 7 bits")
-                            
-                            error_gen(flag2)
+                            print_list.append("False")
+                            print("Error line number",line_number+1,": Immediate value exceeded 7 bits")       
                     else:
-                        print("syntax error: Invalid immediate(not integer)")
-                       
-                        error_gen(flag2)
+                        print_list.append("False")
+                        print("Error line number",line_number+1,":",l[2][1:],"->Invalid immediate(not integer)")                
                 else:
-                    print("syntax error: Invalid register name")
-                   
-                    error_gen(flag2)
+                    print_list.append("False")
+                    print("Error line number",line_number+1,":",l[1],"->Invalid register name")   
             else:
-                    print("syntax error: Instruction not supported by ISA")
-                    
-                    error_gen(flag2)
-            
+                print_list.append("False")
+                print("Error line number",line_number+1,": Instruction not supported by ISA")
+      
         else:
             # TYPE C
             d4={"mov":"00011","ld":"00100","st":"00101","div":"00111","not":"01101","cmp":"01110"}
@@ -160,15 +186,17 @@ def instruction(ls,ln,l,dic,var_dic,extra_var):
                     if l[1] in dic:
                       
                         if l[2] in dic:
-                           
-                            print(d4[l[0]],end="")
-                            print("00000",end="")
-                            print(dic[l[1]],end="")
-                            print(dic[l[2]])
+                            print_list.append(d4[l[0]])
+                            print_list.append("00000")
+                            print_list.append(dic[l[1]])
+                            print_list.append(dic[l[2]])
+                            print_list.append("\n")
+
                         elif l[2] in var_dic:
-                            print(d4[l[0]],end="")
-                            print("0",end="")
-                            print(dic[l[1]],end="")
+                            print_list.append(d4[l[0]])
+                            print_list.append("0")
+                            print_list.append(dic[l[1]])
+
                             cs=""
                             for item in var_dic[l[2]]:
                                 cs+=str(item)
@@ -182,29 +210,29 @@ def instruction(ls,ln,l,dic,var_dic,extra_var):
                                    
                             for i in xtt:
                                 
-                                print(i,end="")
-                            print()
+                                # print(i,end="")
+                                print_list.append(i)
+                            print_list.append("\n")
+                            # print()
                         else:
-                            print("syntax error: Invalid register name or invalid variable name")
-                           
-                            flag2= False
-                            error_gen(flag2)
+                            print_list.append("False")
+                            print("Error line number",line_number+1,":",l[2],"->Invalid register name or invalid variable name")
+                            flag2=False
                     else:
-                        print("syntax error: Invalid register name")
-                        
-                        flag2= False
-                        error_gen(flag2)
+                        print_list.append("False")
+                        print("Error line number",line_number+1,":",l[1],"->Invalid register name")
+                        flag2=False
                 elif ":" in l[0]:
                     lst10=[]
                     for k in range(1,len(l)):
                         lst10.append(l[k])
-                    
-                    instruction(ls,ln,lst10,dic,var_dic,extra_var)  
+                    instruction(ls,ln,lst10,dic,var_dic,extra_var,line_number)  
                 else:
-                        print("syntax error: Instruction not supported by ISA")
+                    print_list.append("False")
+                    print("Error line number",line_number+1,": Instruction not supported by ISA")
+                    flag2=False
+                   
                        
-                        flag2= False
-                        error_gen(flag2)  
 
 
 red=[]
@@ -239,40 +267,43 @@ for j in range(0,len(red)):
         if j==k:
             var_dic[lst[1]]=line_number[k]
             k+=1
-        else:
-           
-            count=j
-            flag=False
-    
     j+=1
 flag2=True
 
+
 for i in range(0,len(red)):
-    if len(red[i]) ==2:
+    if len(new_list11[i]) ==2:
         for j in range(0,len(new_list11[i])):
             if new_list11[i][1]=="hlt":
                 if i!=len(new_list11)-1:
-                    print("syntax error: hlt should be defined at last")
-                    flag=False
+                    print_list.append("False")
+                    print("Error: hlt should be defined at last")
+                    flag="False"
                     break
-    elif len(red[i]) ==1:
+    elif len(new_list11[i]) ==1:
         for j in range(0,len(new_list11[i])):
             if new_list11[i][0]=="hlt":
                 if i!=len(new_list11)-1:
-                    print("syntax error: hlt should be defined at last")
-                    flag=False
+                    print("Error: hlt should be defined at last")
+                    print_list.append("False")
+                    flag="False"
                     break
-        
 
+if "hlt" not in new_list11[len(new_list11)-1]:
+    print_list.append("False")
+    print("Error: hlt statement not found at last")
+    flag="False"
+    
 for i in range(k,len(red)):
-    if error_gen(flag2)==True :
-        l=list(map(str,red[i].split()))
-        if l[0]!="var":
-            instruction(red,line_number,l,dic,var_dic,k)
-        else:
-            print("syntax error: Variable can not be defined in between")
+    l=list(map(str,red[i].split()))
+    if l[0]!="var":
+        instruction(red,line_number,l,dic,var_dic,k,i)
     else:
-        print("syntax error")
-        
-        flag=False
-        break
+        print_list.append("False")
+        print("Error line number",i+1,": Variable can not be defined in between")
+if "False" not in print_list:
+    # print(":::::::::::::::::::::::")
+    for i in range(0,len(print_list)):
+        # if print_list[i]!="\n":
+            print(print_list[i],end="")
+
