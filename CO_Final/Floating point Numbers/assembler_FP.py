@@ -175,7 +175,7 @@ def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
                       
                         print_list.append(dic[l[1]])        
                         fp_lst=list(map(str,l[2][1:].split(".")))
-                        if l[2][1:]<"0.12109376" and l[2][1:]>="0.00390624":  # denormal range [0.00390625,0.12109375]
+                        if l[2][1:]<"0.12109376" and l[2][1:]>"0.00390624":  # denormal range [0.00390625,0.12109375]
                             cd1=int(fp_lst[0])
                             cd1=bin(cd1).replace("0b","")
                             binary_num = ""
@@ -204,7 +204,7 @@ def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
                             converted_imm=exponent+mantissa
                             print_list.append(converted_imm)
                             print_list.append("\n")
-                        else:
+                        elif l[2][1:]<"31.51" and l[2][1:]>"0.1249":  # normal range [0.125,31.5] :
                             cd1=int(fp_lst[0])
                             cd1=bin(cd1).replace("0b","")
                             binary_num = ""
