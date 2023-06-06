@@ -11,3 +11,12 @@ We also used dictionaries to give opcodes and register numbers in binary for the
 We also used dictionary to give each instruction a line number which we used in machine code for "jmp" ,"je" and similar instructions.
 We assigned binary number of 7 bits to variables according to the line numbers.
 In built python functions are also used like isnumeric(),len() etc.
+
+We added 5 extra instructions:
+
+   Name      Opcode     Syntax          Description
+1) mod       10011      mod R1 R2 R3    R1 will store remainder when R2 is divided by R3
+2) nor       10100      nor R1 R2 R3    R1 will store bitwise nor of R2 and R3
+3) nand      10101      nand R1 R2 R3   R1 will store bitwise nand of R2 and R3
+4) xnor      10110      xnor R1 R2 R3   R1 will store bitwise xnor of R2 and R3
+5) square    10111      square R1 R2    R1 will store square of R2
