@@ -274,7 +274,9 @@ def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
                             converted_imm=exponent+mantissa
                             print_list.append(converted_imm)
                             print_list.append("\n")
-                                 
+                        else:
+                            print_list.append("False")
+                            print("Error line number",line_number+1,":",l[2][1:],"->Invalid immediate")         
                     
 
                     else:
