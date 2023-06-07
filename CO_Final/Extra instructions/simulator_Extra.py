@@ -9,10 +9,10 @@
 # FLAGS 111
 
 
-print_list=[]
+print_list = []
 pc = 0
 label_flag = True
-hlt_flag=True
+hlt_flag = True
 rf_dic = {"000": "0000000000000000", "001": "0000000000000000", "010": "0000000000000000", "011": "0000000000000000",
           "100": "0000000000000000", "101": "0000000000000000", "110": "0000000000000000", "111": "0000000000000000"}
 reg_names = {"R0": "000", "R1": "001", "R2": "010", "R3": "011",
@@ -136,7 +136,7 @@ def Execution_engine(instruction):
                     rs2 = rf_dic[rs2b]
                     rs1, rs2 = int(rs1, 2), int(rs2, 2)
                     rrd = rs1*rs2
-        
+
                     if rrd > 65535:
                         rf_dic['111'] = "0000000000001000"
                     rf_dic['111'] = "0000000000000000"
@@ -148,27 +148,27 @@ def Execution_engine(instruction):
                     else:
                         while (len(cd2) < 16):
                             cd2.insert(0, 0)
-                        item2=''
+                        item2 = ''
                         for j in cd2:
                             item2 += str(j)
                         rf_dic[rdb] = item2
                     # print("mul done")
                     return
-                elif opcode=='00010':    #MOV Imm
-                    rd=instruction[6:9]
-                    imm=instruction[9:]
-                    l1=[]
-                    for i in range(0,len(imm)):
+                elif opcode == '00010':  # MOV Imm
+                    rd = instruction[6:9]
+                    imm = instruction[9:]
+                    l1 = []
+                    for i in range(0, len(imm)):
                         l1.append(int(imm[i]))
-                    while len(l1)<16:
-                        l1.insert(0,0)
-                    val=""
+                    while len(l1) < 16:
+                        l1.insert(0, 0)
+                    val = ""
                     for u in l1:
-                        val+=str(u)
-                    rf_dic[rd]=val
-                    rf_dic['111']="0000000000000000"            
+                        val += str(u)
+                    rf_dic[rd] = val
+                    rf_dic['111'] = "0000000000000000"
                     return
-                 
+
                 elif opcode == '00011':  # MOV reg1 reg2
                     # rd,rs1,=int(instruction[10:13],2),int(instruction[13:],2)
                     # rd=rs1
@@ -241,8 +241,8 @@ def Execution_engine(instruction):
 
                 elif opcode == '01000':  # right shift
                     rs1b = instruction[6:9]
-                    imm =instruction[9:]
-                    imm1=int(int(imm,2))
+                    imm = instruction[9:]
+                    imm1 = int(int(imm, 2))
                     rs1 = list(rf_dic[rs1b])
                     for i in range(imm1):
                         rs1.insert(0, 0)
@@ -257,14 +257,14 @@ def Execution_engine(instruction):
                     return
 
                 elif opcode == '01001':  # left shift
-                   
+
                     rs1b = instruction[6:9]
                     imb = instruction[9:16]
-                    rs1=rf_dic[rs1b]
-                    im=int(imb,2)
-                    imm=int(im)
+                    rs1 = rf_dic[rs1b]
+                    im = int(imb, 2)
+                    imm = int(im)
                     rs1 = list(rs1)
-                    for i in range(0,imm):
+                    for i in range(0, imm):
                         rs1.insert(len(rs1), 0)
                         # rs1=rs1[1:]
                     # rrd=rs1
@@ -372,44 +372,43 @@ def Execution_engine(instruction):
                     if opcode == "11100":  # jump if less than
                         if rf_dic['111'] == "0000000000000100":
                             # print("jump if less than")
-                            
+
                             pc = mem
-                       
 
                     elif opcode == "11111":  # jump if equal
                         if rf_dic['111'] == "0000000000000001":
                             # print("jump if equal")
                             pc = mem
-                     
+
                     elif opcode == "11101":  # jump if greater than
                         if rf_dic['111'] == "0000000000000010":
                             # print("jump if greater than")
                             pc = mem
-                  
+
                     else:  # unconditional jump ,opcode
 
                         # print("uncondditional jump")
                         pc = mem
-                        
+
                     rf_dic['111'] = "0000000000000000"
                     # print("jump done")
-                    label_flag=False
+                    label_flag = False
                     return
 
                 elif opcode == "11010":  # halt
                     rf_dic['111'] = "0000000000000000"
-                    hlt_flag=False
+                    hlt_flag = False
                     return
                 # 10000 F_Addition
                 # 10001 F_Subtraction
                 # 10010 MoveF_Immediate
-                elif opcode =="10000":
+                elif opcode == "10000":
                     pass
-                elif opcode =="10001":
+                elif opcode == "10001":
                     pass
-                elif opcode =="10010":
+                elif opcode == "10010":
                     pass
-                elif opcode =="10011":  #MOD
+                elif opcode == "10011":  # MOD
                     rdb, rs1b, rs2b = instruction[7:10], instruction[10:13], instruction[13:]
                     rs1 = rf_dic[rs1b]
                     rs2 = rf_dic[rs2b]
@@ -436,9 +435,6 @@ def Execution_engine(instruction):
                         rf_dic['111'] = "0000000000000000"
                     return
 
-                
-
-
                 elif opcode == "10100":  # nor
                     rd = instruction[7:10]
                     rs1 = instruction[10:13]
@@ -454,7 +450,6 @@ def Execution_engine(instruction):
                     # print("or done")
                     return
 
-
                 elif opcode == "10101":  # nand
                     rd = instruction[7:10]
                     rs1 = instruction[10:13]
@@ -469,7 +464,6 @@ def Execution_engine(instruction):
                     rf_dic['111'] = "0000000000000000"
                     # print("and done")
                     return
-                
 
                 elif opcode == '10110':  # Xnor
                     rd = instruction[7:10]
@@ -485,13 +479,12 @@ def Execution_engine(instruction):
                     rf_dic['111'] = "0000000000000000"
                     # print("exclusive or done")
                     return
-                    
 
-                elif opcode=="10111":  #Square
+                elif opcode == "10111":  # Square
                     rdb, rs1b = instruction[10:13], instruction[13:]
                     rs1 = rf_dic[rs1b]
                     rs1 = int(rs1, 2)
-                    rrd=rs1*rs1
+                    rrd = rs1*rs1
                     if rrd > 65535:
                         rf_dic['111'] = "0000000000001000"
                     else:
@@ -515,7 +508,6 @@ def Execution_engine(instruction):
                     return
 
 
-
 for i in range(0, len(ayana)):
     memory_address[key[i]] = ayana[i]
 # print(memory_address)
@@ -530,7 +522,7 @@ def call_pc(mem_addr_key):
 
     opcode = instruction[0:5]
     # if opcode not in ["01111","11100","11111","11101"]:
- 
+
     # print(pc, end="        ")
     print_list.append(pc)
     print_list.append("      ")
@@ -546,7 +538,7 @@ def call_pc(mem_addr_key):
 for i in range(0, len(ayana)):
     # print("for new inst")
     # print("pc before execution",pc)
-    if hlt_flag==True:
+    if hlt_flag == True:
         # if memory_address[key[i-1]] == "1101000000000000":
 
         #     break
@@ -564,7 +556,10 @@ for i in range(0, len(ayana)):
 
 # MEMORY DUMB
 for i in print_list:
-    print(i,end=" ")
+    if i != "\n":
+        print(i, end=" ")
+    else:
+        print()
 for i in memory_address:
     print(memory_address[i])
 # instruction=ayana[0]
