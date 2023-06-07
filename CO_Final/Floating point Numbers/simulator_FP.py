@@ -386,29 +386,28 @@ def Execution_engine(instruction):
                     if opcode == "11100":  # jump if less than
                         if rf_dic['111'] == "0000000000000100":
                             # print("jump if less than")
-
+                            label_flag = False
                             pc = mem
 
                     elif opcode == "11111":  # jump if equal
                         if rf_dic['111'] == "0000000000000001":
                             # print("jump if equal")
                             pc = mem
-
+                            label_flag = False
                     elif opcode == "11101":  # jump if greater than
                         if rf_dic['111'] == "0000000000000010":
                             # print("jump if greater than")
                             pc = mem
-
+                            label_flag = False
                     else:  # unconditional jump ,opcode
 
                         # print("uncondditional jump")
                         pc = mem
-
+                        label_flag = False
                     rf_dic['111'] = "0000000000000000"
                     # print("jump done")
-                    label_flag = False
+                    # label_flag=False
                     return
-
                 elif opcode == "11010":  # halt
                     rf_dic['111'] = "0000000000000000"
                     hlt_flag = False
