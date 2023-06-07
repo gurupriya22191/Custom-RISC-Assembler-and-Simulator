@@ -1,10 +1,10 @@
 print_list=[]
 import math
 def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
-    d1={"add":"00000","sub":"00001","mul":"00110","xor":"01010","or":"01011","and":"01100"}
+    d1={"add":"00000","sub":"00001","mul":"00110","xor":"01010","or":"01011","and":"01100","mod":"10011","nor":"10100","nand":"10101","xnor":"10110"}
     d3={"mov":"00010","rs":"01000","ls":"01001"}  
     array={"jmp":"01111" ,"jlt":"11100","jgt":"11101","je":"11111"}
-    d4={"mov":"00011","ld":"00100","st":"00101","div":"00111","not":"01101","cmp":"01110"}
+    d4={"mov":"00011","ld":"00100","st":"00101","div":"00111","not":"01101","cmp":"01110","square":"10111"}
     flag2=True
     if len(l)==5:
         if ":" in l[0]:
@@ -26,28 +26,44 @@ def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
             print_list.append(d1[l[0]])
             print_list.append("00")
 
-            if l[1] in dic  :
+            if l[1] in dic and l[1]!="FLAGS" :
                 # print(dic[l[1]],end="")
 
                 print_list.append(dic[l[1]])
 
-                if l[2] in dic :
+                if l[2] in dic and l[2] !="FLAGS":
                     # print(dic[l[2]],end="")
 
                     print_list.append(dic[l[2]])
 
-                    if l[3] in dic :
+                    if l[3] in dic and l[3]!="FLAGS":
                         # print(dic[l[3]])
 
                         print_list.append(dic[l[3]])
                         print_list.append("\n")
-                   
+                    elif l[3]=="FLAGS":
+                        
+                        opcode=["add","sub","mul","div","cmp"]
+                        if red[line_number-1][0:3] in opcode:
+                            print_list.append(dic[l[3]])
+                            print_list.append("\n")
+                        else:
+                            print_list.append("False")
+                            print("Error line number",line_number+1,":",l[3],"->FLAGS register is not set yet")
 
                     else:
                         print_list.append("False")
                         print("Error line number",line_number+1,":",l[3],"->wrong register name")
                         flag2=False
-              
+                elif l[2]=="FLAGS":
+                        
+                        opcode=["add","sub","mul","div","cmp"]
+                        if red[line_number-1][0:3] in opcode:
+                            print_list.append(dic[l[3]])
+                            print_list.append("\n")
+                        else:
+                            print_list.append("False")
+                            print("Error line number",line_number+1,":",l[3],"->FLAGS register is not set yet")
                 else:
                     print_list.append("False")
                     print("Error line number",line_number+1,":",l[2],"->wrong register name")
@@ -274,7 +290,7 @@ def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
                    
                     if l[1] in dic:
                       
-                        if l[2] in dic :
+                        if l[2] in dic and l[2]!="FLAGS":
                             print_list.append(d4[l[0]])
                             print_list.append("00000")
                             print_list.append(dic[l[1]])
@@ -303,12 +319,23 @@ def instruction(ls,ln,l,dic,var_dic,extra_var,line_number):
                                 print_list.append(i)
                             print_list.append("\n")
                             # print()
-             
+                        elif l[2]=="FLAGS":
+                            opcode=["add","sub","mul","div","cmp"]
+                            if red[line_number-1][0:3] in opcode:
+                                print_list.append(dic[l[3]])
+                                print_list.append("\n")
+                            else:
+                                print_list.append("False")
+                                print("Error line number",line_number+1,":",l[3],"->FLAGS register is not set yet")
+                        
                         else:
                             print_list.append("False")
                             print("Error line number",line_number+1,":",l[2],"->Invalid register name or invalid variable name")
                             flag2=False
-                 
+                    elif l[1]=="FLAGS":
+                        print_list.append("False")
+                        print("Error line number",line_number+1,":",l[1],"->Value cannot be moved to FLAGS")
+                        flag2=False
                     else:
                         print_list.append("False")
                         print("Error line number",line_number+1,":",l[1],"->Invalid register name")
