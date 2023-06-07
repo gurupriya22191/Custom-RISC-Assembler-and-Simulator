@@ -73,9 +73,10 @@ while True:
     except:
         break
 # pc
-
+pc1=0
 
 def Execution_engine(instruction):
+    global pc1
     global pc
     global label_flag
     global hlt_flag
@@ -376,31 +377,31 @@ def Execution_engine(instruction):
                     # print("compare done")
                     return
 
-               # Jumps to mem_addr,
+                # Jumps to mem_addr,
                 # where mem_addr is
                 # a memory address.
-               elif opcode in ["01111", "11100", "11111", "11101"]:
+                elif opcode in ["01111", "11100", "11111", "11101"]:
                     mem = instruction[9:]
                     if opcode == "11100":  # jump if less than
                         if rf_dic['111'] == "0000000000000100":
                             # print("jump if less than")
                             label_flag = False
-                            pc = mem
+                            pc1 = mem
 
                     elif opcode == "11111":  # jump if equal
                         if rf_dic['111'] == "0000000000000001":
                             # print("jump if equal")
-                            pc = mem
+                            pc1 = mem
                             label_flag = False
                     elif opcode == "11101":  # jump if greater than
                         if rf_dic['111'] == "0000000000000010":
                             # print("jump if greater than")
-                            pc = mem
+                            pc1 = mem
                             label_flag = False
                     else:  # unconditional jump ,opcode
 
                         # print("uncondditional jump")
-                        pc = mem
+                        pc1 = mem
                         label_flag = False
                     rf_dic['111'] = "0000000000000000"
                     # print("jump done")
@@ -454,6 +455,7 @@ for i in range(0, len(ayana)):
         #     break
         else:
             # print("inside else")
+            pc=pc1
             label_flag = True
             call_pc(pc)
     else:
