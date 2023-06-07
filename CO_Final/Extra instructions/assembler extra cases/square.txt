@@ -1,0 +1,3 @@
+mov R3 $3
+square R2 R3
+hlt
