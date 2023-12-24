@@ -1,0 +1,4 @@
+mov R2 $2
+mov R3 $3
+xnor R1 R2 R3
+hlt
