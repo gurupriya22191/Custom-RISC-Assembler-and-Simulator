@@ -1,4 +1,4 @@
-# COproject_Grp2
+#  Custom RISC Assembler and Simulator
 Assembler
 
 In this project we used Python language to write the program for our assembler. 
